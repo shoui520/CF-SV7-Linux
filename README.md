@@ -385,6 +385,21 @@ WLSW.WSST() → HKEY.SGET(0x0B) → EC0.G6F0() → reads EC register 0xA6 bit 0
 
 The switch also physically cuts USB power to the Bluetooth controller (typically on bus 1-7), which is an EC-level behaviour independent of this daemon. This script only handles the Wi-Fi rfkill side, since Bluetooth is already handled by the hardware.
 ```
+
+### Function keys
+
+All function keys work and produce scan codes, they can be mapped to anything you wish. These two: F8 (projector) and F10 (hibernate/suspend), don't do anything by default. The system receives the input, but doesn't know what to do with it.  
+If you wish to replicate the Panasonic intended Windows experience, you can set keyboard shortcuts in KDE:
+
+1. Open KDE System Settings
+2. Go on "Keyboard" and then "Shortcuts"
+3. Under Applications, click on KDE System Settings. Set a shortcut for **Display Settings**. Press F8.
+
+Hibernate requires additional setup.
+
+### Sleep issues
+ 
+
 ### KDE Performance Optimization:
 #### Disable file indexer:
 ```
