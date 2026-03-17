@@ -344,8 +344,30 @@ chmod +x ~/.config/autostart-scripts/touchpad.sh
 ```
 Log out and log back in and you're done!  
 
+### Wireless switch
 
+The wireless toggle switch on the left of the laptop is not a hardware switch for the WiFi- all it does is physically disconnect Bluetooth then tell the driver on Windows to also disable WiFi. So by default on Linux, all it does is disable Bluetooth, which only does half of what we want.  
+I got it working with a bit of reverse engineering of the DSDT and made a script to make it "just work"
 
+Install:  
+```
+sudo modprobe ec_sys
+git clone https://github.com/shoui520/CF-SV7-Linux && cd wireless-switch/
+chmod +x install.sh
+sudo ./install.sh
+```
+
+How it works:  
+```
+- **EC register `0xA6`, bit 0**: `1` = switch ON, `0` = switch OFF
+- **ACPI event `0x0050`**: Fired by EC query `_Q93` via the `panasonic-laptop` kernel module whenever the switch is toggled (logged as "Unknown hotkey event: 0x0050" in journald)
+- On each event (and at service start), the daemon reads `0xA6` and calls `rfkill` to match```
+The wireless switch state was traced through the DSDT:
+EC query _Q93 → TRDF() → WLSW.NOTF() → HIND(0x50) + Notify
+WLSW.WSST() → HKEY.SGET(0x0B) → EC0.G6F0() → reads EC register 0xA6 bit 0
+
+The switch also physically cuts USB power to the Bluetooth controller (typically on bus 1-7), which is an EC-level behaviour independent of this daemon. This script only handles the Wi-Fi rfkill side, since Bluetooth is already handled by the hardware.
+```
 ### KDE Performance Optimization:
 #### Disable file indexer:
 ```
