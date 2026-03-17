@@ -218,7 +218,7 @@ makepkg -si
 ### Install KDE (X11)
 The Let's Note circular scrolling feature is very useful, but it **does not work on Wayland**. We will be using X11 instead.  
 ```
-sudo pacman -S plasma-x11-session xorg-server xorg-xinit xorg-xrandr plasma-desktop sddm sddm-kcm kscreen kde-gtk-config breeze-gtk plasma-pa plasma-nm plasma-systemmonitor bluedevil powerdevil konsole dolphin kate spectacle ark systemsettings xdg-desktop-portal xdg-desktop-portal-kde xdg-user-dirs
+sudo pacman -S plasma-x11-session xorg-server xorg-xinit xorg-xrandr plasma-desktop sddm sddm-kcm kscreen kde-gtk-config breeze-gtk plasma-pa plasma-nm plasma-systemmonitor bluedevil powerdevil konsole dolphin kate spectacle ark systemsettings xdg-desktop-portal xdg-desktop-portal-kde xdg-user-dirs power-profiles-daemon fastfetch partitionmanager ntfs-3g dosfstools exfatprogs btrfs-progs intel-gpu-tools intel-media-driver libva-intel-driver vulkan-intel usbutils
 ```
 ### PipeWire for audio
 ```
@@ -262,7 +262,6 @@ The kwallet config file is: `~/.config/kwalletrc`
 Enabled=false
 First Use=false
 ```
-### Disable KDE file indexer bloat:
 
 ### Reboot
 ```
@@ -298,3 +297,57 @@ We are not quite done yet, now we need to set the IME in **Input Method**.
 6. Use the thing on the left to drag the Japanese keyboard: キーボード - 日本語 / Keyboard - Japanese to "Input Method Off/入力メソッドオフ".
 7. Ensure Mozc is in "Input Method On/入力メソッドオン"
 8. Click **Apply/適用** to finish.
+
+### Circular scrolling
+
+Use the Synaptics driver instead of libinput. This will also mean the touchpad will no longer be manageable by KDE- which is fine since I have already figured out the best Synaptics settings for the CF-SV7 touchpad.
+```
+sudo pacman -S xf86-input-synaptics
+```
+Create a file:
+```
+sudo nano /etc/X11/xorg.conf.d/70-synaptics.conf
+```
+Paste:
+```
+Section "InputClass"
+        Identifier "touchpad catchall"
+        Driver "synaptics"
+        MatchIsTouchpad "on"
+        MatchDevicePath "/dev/input/event*"
+        Option "TapButton1" "1"
+        Option "TapButton2" "3"
+        Option "TapButton3" "2"
+        Option "CircularScrolling" "on"
+        Option "CircScrollTrigger" "0"
+        Option "CircularPad" "on"
+        Option "LeftEdge" "1574"
+        Option "RightEdge" "5416"
+        Option "TopEdge" "1535"
+        Option "BottomEdge" "4395"
+        Option "VertScrollDelta" "-200"
+EndSection
+```
+A bug in whatever reads the config file hates decimals on my LC_NUMERIC, so we'll just use `synclient` to set the decimal values through an autostart script:
+```
+mkdir -p ~/.config/autostart-scripts
+```
+```
+cat > ~/.config/autostart-scripts/touchpad.sh << 'EOF'
+#!/bin/bash
+synclient MinSpeed=0.1
+synclient MaxSpeed=1.3
+synclient AccelFactor=0.01
+synclient CircScrollDelta=0.4
+EOF
+chmod +x ~/.config/autostart-scripts/touchpad.sh
+```
+Log out and log back in and you're done!  
+
+
+
+### KDE Performance Optimization:
+#### Disable file indexer:
+```
+balooctl6 disable
+```
