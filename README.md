@@ -236,7 +236,12 @@ Then install 源ノゴシック Code JP, it's a way better terminal and code fon
 ```
 yay -S otf-source-han-code-jp
 ```
-
+We will set KDE fonts later, but you can import my fontconfig to prefer Japanese glyphs over other Han unification characters:
+```
+git clone https://github.com/shoui520/CF-SV7-Linux && cd CF-SV7-Linux/.config/fontconfig
+cp fonts.conf ~/.config/fontconfig/fonts.conf
+fc-cache -fv
+```
 ### Japanese IME installation (日本語入力)
 ```
 sudo pacman -S fcitx5 fcitx5-mozc fcitx5-gtk fcitx5-qt fcitx5-configtool
@@ -273,6 +278,9 @@ reboot
 In SDDM, ensure the **X11** session of Plasma is selected in the top-left, not Wayland.  
 
 Login.  
+### Set display scaling
+
+The display scaling is set incorrectly. Right click the desktop and click Display Settings. Change the display scaling to 125%, or whatever you are comfortable with.  
 
 ### Japanese IME installation (continuation)
 
