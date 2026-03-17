@@ -238,7 +238,7 @@ yay -S otf-source-han-code-jp
 ```
 We will set KDE fonts later, but you can import my fontconfig to prefer Japanese glyphs over other Han unification characters:
 ```
-git clone https://github.com/shoui520/CF-SV7-Linux && cd CF-SV7-Linux/.config/fontconfig
+git clone https://github.com/shoui520/CF-SV7-Linux && cd CF-SV7-Linux/config/fontconfig
 cp fonts.conf ~/.config/fontconfig/fonts.conf
 fc-cache -fv
 ```
