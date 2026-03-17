@@ -242,7 +242,7 @@ git clone https://github.com/shoui520/CF-SV7-Linux && cd CF-SV7-Linux/.config/fo
 cp fonts.conf ~/.config/fontconfig/fonts.conf
 fc-cache -fv
 ```
-### Japanese IME installation (日本語入力)
+### Japanese IME installation (日本語入力) - part 1
 ```
 sudo pacman -S fcitx5 fcitx5-mozc fcitx5-gtk fcitx5-qt fcitx5-configtool
 ```
@@ -282,7 +282,16 @@ Login.
 
 The display scaling is set incorrectly. Right click the desktop and click Display Settings. Change the display scaling to 125%, or whatever you are comfortable with.  
 
-### Japanese IME installation (continuation)
+### Set SDDM theme to Breeze
+Make SDDM look KDE-native.  
+
+1. Open KDE System Settings
+2. Click "Colours & Themes" (色とテーマ)
+3. Click Login Screen (SDDM)/ログイン画面 (SDDM)
+4. Click "Breeze", then click Apply/適用
+5. Enter the root password.
+
+### Japanese IME installation - part 2
 
 In KDE, the IME requires a little setup to work as expected.
 
