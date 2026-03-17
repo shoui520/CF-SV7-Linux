@@ -352,7 +352,7 @@ I got it working with a bit of reverse engineering of the DSDT and made a script
 Install:  
 ```
 sudo modprobe ec_sys
-git clone https://github.com/shoui520/CF-SV7-Linux && cd wireless-switch/
+git clone https://github.com/shoui520/CF-SV7-Linux && cd CF-SV7-Linux/wireless-switch/
 chmod +x install.sh
 sudo ./install.sh
 ```
