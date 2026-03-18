@@ -395,8 +395,54 @@ If you wish to replicate the Panasonic intended Windows experience, you can set 
 2. Go on "Keyboard" and then "Shortcuts"
 3. Under Applications, click on KDE System Settings. Set a shortcut for **Display Settings**. Press F8.
 
-Hibernate requires additional setup.
+Hibernate requires additional setup. After you set up hibernate, you can set the keyboard shortcut for **Hibernate** under **Power Management** as F10.  
 
+### Hibernate setup  
+Since I opted for zram over swap initially, I didn't have an on-disk swapfile, but this is fine, we can still create one and use hibernate.  
+
+NOTE: `count=8192` is for 8GB Let's Notes. If you have a 16GB one use `count=16384`
+```
+sudo dd if=/dev/zero of=/swapfile bs=1M count=8192 status=progress
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+```
+Edit /etc/fstab:
+```
+/swapfile none swap defaults,pri=10 0 0
+```
+Enable it:
+```
+sudo swapon -a
+```
+Identify the partition the swapfile is on (for me, `/dev/sda2`)
+```
+df /swapfile
+```
+
+Find the resume offset. 
+```
+sudo filefrag -v /swapfile | head -n 4
+```
+The value you are looking for is the fourth number you see, under `physical_offset`. There are two numbers under `physical_offset`. This is a range. Use the first number of the range.  
+Edit kernel parameters in `/etc/default/grub`, append "resume=/path/to/device resume_offset=<offset>` to your GRUB_CMDLINE_LINUX_DEFAULT.  
+e.g.,:
+```
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 mitigations=off mem_sleep_default=deep resume=/dev/sda2 resume_offset=59535360"
+```
+Regenerate grub config
+```
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+Add the resume hook to mkinitcpio. Edit `/etc/mkinitcpio.conf`. Add `resume` to the HOOKS array, AFTER `filesystems`
+e.g.,:
+```
+HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole block filesystems resume fsck)
+```
+Now rebuild mkinitcpio:
+```
+sudo mkinitcpio -P
+```
+Reboot.  
 ### Sleep issues
 
 #### Stop last screen from showing
@@ -434,7 +480,7 @@ sudo chmod +x /usr/lib/systemd/system-sleep/lock-first.sh
 This solution isn't perfect. You might need to further adjust the `sleep 2.5` line to wait for longer, depending on your experiences.  
 
 ### S2idle issues - switch to suspend (deep)
-This is merely an option that is available, you don't need to do this; use it if you suspect s2idle is unstable on your system and unsuitable for your needs. In my experience, s2idle sleep on this is just screen off with extra steps: the CPU stays on, the fan stays spinning and processes continue running. I've also encountered a kernel panic with s2idle before. I haven't been able to repro it but because of stability concerns like this and battery life disadvantages, I just don't see the point of s2idle. So, I opted to use deep/suspend-to-ram/S3 instead.  
+The out of box sleep experience (using s2idle) is very poor in my opinion. In my experience, s2idle sleep on this laptop is just screen off with extra steps: the CPU stays on, the fan stays spinning and processes continue running. I've also encountered a kernel panic with s2idle before. I haven't been able to repro it but because of stability concerns like this and battery life disadvantages, I just don't see the point of s2idle. So, I opted to use deep/suspend-to-ram/S3 instead.  
 
 Append `mem_sleep_default=deep` to your `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`
 e.g.,:
