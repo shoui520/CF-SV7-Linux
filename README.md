@@ -20,6 +20,7 @@ Skip to:
 * [Last screen showing on wake issue](?tab=readme-ov-file#stop-last-screen-from-showing)
 * [Add support for power switch + keyboard to wake](?tab=readme-ov-file#enable-power-switch-to-wake-and-keyboard-for-s2idle)
 * [Function keys](?tab=readme-ov-file#function-keys)
+* [CachyOS BORE Full-LTO kernel compiled on the CF-SV7]
 
 ## Arch Install
 
@@ -563,7 +564,7 @@ KDE System Settings → Animations → Global animation speed: **Instant** - dis
 KDE System Settings → Window Management → Desktop Effects. Disable unneeded effects here. I only have 3 enabled: Overview, Dialog Parent, Decrease saturation of non responding apps
 
 You can also disable transparency for the bottom panel. right click > edit panel > transparency > opaque
-### KRunner plugins
+#### KRunner plugins
 
 KDE's search comes with a ton of plugins that all get loaded at every single keystroke. You can slim down the number of plugins you have enabled. 
 
@@ -572,3 +573,38 @@ KDE System Settings → Search → Plasma Search. Disable stuff you don't need. 
 ### KDE services
 
 Search for "services" in the application launcher. Disable things you are certain you don't need.  
+
+
+## CachyOS 6.19.8 Kernel for Panasonic Let's Note CF-SV7
+Compiled this kernel to squeeze as much performance out of the CF-SV7 as possible. It has been really stable for me so far, which was a pleasant surprise. 
+
+* CachyOS 6.19.8 with BORE scheduler
+* Clang/LLVM Full LTO (whole-program link-time optimisation)
+* -O3 aggressive optimisation
+* Native Skylake CPU target (AVX2, BMI2, AES-NI, FMA)
+* 1000Hz tick rate, full tickless, full preempt
+* BBR3 TCP congestion control
+* Transparent hugepages always-on
+* NUMA disabled (single-socket laptop)
+
+Intended environment:
+* Kaby Lake-R CPU (such as my i5-8350U)
+* Arch Linux
+* GRUB bootloader
+
+File size too big for my GitHub account, so just download it in the browser: [Download](https://mega.nz/folder/tJk1WZRC#1Hv5uvcgvaSEdI35XXLx2Q)  
+
+```
+sudo pacman -U linux-cachyos-6.19.8-1-x86_64.pkg.tar.zst linux-cachyos-headers-6.19.8-1-x86_64.pkg.tar.zst
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+reboot
+```
+
+GRUB Tips:
+To make it easier to pick kernels from GRUB, add these to `/etc/default/grub`:
+```
+GRUB_TIMEOUT=5
+GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true
+GRUB_DISABLE_SUBMENU=true
+```
