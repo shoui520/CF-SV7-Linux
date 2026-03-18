@@ -398,7 +398,38 @@ If you wish to replicate the Panasonic intended Windows experience, you can set 
 Hibernate requires additional setup.
 
 ### Sleep issues
- 
+
+#### Stop last screen from showing
+When the laptop is waken up, it will show the last screen shown when the laptop was put to sleep. This means anyone will see your desktop before the KDE lock screen. You need to do some clever trickery to get around this:
+
+Install vlock:
+```
+sudo pacman -S vlock
+```
+Add this systemd script (save as a .sh file) to `/usr/lib/systemd/system-sleep/` (mkdir it if it doesn't exist)
+```
+#!/bin/bash
+BACKLIGHT=/sys/class/backlight/intel_backlight
+
+if [ "$1" = "pre" ]; then
+    cat "$BACKLIGHT/brightness" > /tmp/pre_suspend_brightness
+    loginctl lock-sessions
+    chvt 3
+fi
+
+if [ "$1" = "post" ]; then
+    systemd-run --no-block bash -c '
+        chvt 2
+        echo 0 > /sys/class/backlight/intel_backlight/brightness
+        sleep 2.5
+        cat /tmp/pre_suspend_brightness > /sys/class/backlight/intel_backlight/brightness
+    '
+fi
+```
+Then run chmod +x on the file. e.g.:
+```
+sudo chmod +x /usr/lib/systemd/system-sleep/lock-first.sh
+```
 
 ### KDE Performance Optimization:
 #### Disable file indexer:
