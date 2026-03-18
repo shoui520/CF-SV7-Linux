@@ -431,6 +431,19 @@ Then run chmod +x on the file. e.g.:
 sudo chmod +x /usr/lib/systemd/system-sleep/lock-first.sh
 ```
 
+This solution isn't perfect. You might need to further adjust the `sleep 2.5` line to wait for longer, depending on your experiences.  
+
+### S2idle issues - switch to suspend (deep)
+This is merely an option that is available, you don't need to do this; use it if you suspect s2idle is unstable on your system. I've encountered a kernel panic with s2idle before. I haven't been able to repro it but because of stability concerns like this and battery life disadvantages, I opted to use deep/suspend-to-ram/S3 instead.  
+Append `mem_sleep_default=deep` to your `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`
+e.g.,:
+```
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 mitigations=off mem_sleep_default=deep"
+```
+Then regenerate GRUB config: 
+```
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
 ### KDE Performance Optimization:
 #### Disable file indexer:
 ```
