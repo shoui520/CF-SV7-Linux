@@ -242,6 +242,7 @@ git clone https://github.com/shoui520/CF-SV7-Linux && cd CF-SV7-Linux/config/fon
 cp fonts.conf ~/.config/fontconfig/fonts.conf
 fc-cache -fv
 ```
+
 ### Japanese IME installation (日本語入力) - part 1
 ```
 sudo pacman -S fcitx5 fcitx5-mozc fcitx5-gtk fcitx5-qt fcitx5-configtool
@@ -315,6 +316,32 @@ We are not quite done yet, now we need to set the IME in **Input Method**.
 7. Ensure Mozc is in "Input Method On/入力メソッドオン"
 8. Click **Apply/適用** to finish.
 
+
+### Japanese TTY (kmsconsole)
+```
+yay -S kmscon
+
+sudo mkdir -p /etc/systemd/system/kmsconvt@.service.d
+sudo tee /etc/systemd/system/kmsconvt@.service << 'EOF'
+[Unit]
+Description=KMSCon VT on %I
+After=systemd-user-sessions.service
+After=plymouth-quit-wait.service
+Conflicts=getty@%i.service
+
+[Service]
+ExecStart=/usr/bin/kmscon "--vt=%I" --no-switchvt --font-name "Source Han Code JP Regular" --font-size 18 --login -- /usr/bin/login -p
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl disable getty@tty3
+sudo systemctl enable --now kmsconvt@tty3
+```
+Now Ctrl-Alt-F3 should bring you to a TTY that supports Japanese text.  
 ### Circular scrolling
 
 Use the Synaptics driver instead of libinput. This will also mean the touchpad will no longer be manageable by KDE- which is fine since I have already figured out the best Synaptics settings for the CF-SV7 touchpad.
@@ -479,7 +506,7 @@ sudo chmod +x /usr/lib/systemd/system-sleep/lock-first.sh
 
 This solution isn't perfect. You might need to further adjust the `sleep 2.5` line to wait for longer, depending on your experiences.  
 
-### S2idle issues - switch to suspend (deep)
+#### S2idle issues - switch to suspend (deep)
 The out of box sleep experience (using s2idle) is very poor in my opinion. In my experience, s2idle sleep on this laptop is just screen off with extra steps: the CPU stays on, the fan stays spinning and processes continue running. I've also encountered a kernel panic with s2idle before. I haven't been able to repro it but because of stability concerns like this and battery life disadvantages, I just don't see the point of s2idle. So, I opted to use deep/suspend-to-ram/S3 instead.  
 
 Append `mem_sleep_default=deep` to your `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`
@@ -492,7 +519,7 @@ Then regenerate GRUB config:
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### Enable power switch to wake (and keyboard for s2idle)
+#### Enable power switch to wake (and keyboard for s2idle)
 
 On Windows installs with the Panasonic drivers installed, you should be able to wake the laptop up from sleep with the internal keyboard, the power button, by opening the lid and with USB peripherals. On Linux, by default you can only wake up the laptop by opening the lid or using USB peripherals.  
 
