@@ -1,5 +1,5 @@
 # Linux install for PANASONIC (パナソニック) Let's Note (レッツノート) CF-SV7
-Documenting my linux setup for the CF-SV7. **Single boot!**— will not go into dual boot details.  
+Documenting my Linux setup for the CF-SV7. **Single boot!**— will not go into dual boot details.  
 Let's Note circular scrolling (くるくるスクロール) only works on X11, it does not work on Wayland, so we will NOT be using Wayland.  
 We will be using *Arch Linux* for the best performance, software support, firmware support, update availability and modularity.   
 This setup is focused on Japanese support (日本語化), maximizing performance out of the hardware, and making sure everything works as intended by Panasonic just like it would on Windows.  
