@@ -20,7 +20,6 @@ Skip to:
 * [Last screen showing on wake issue](?tab=readme-ov-file#stop-last-screen-from-showing)
 * [Add support for power switch + keyboard to wake](?tab=readme-ov-file#enable-power-switch-to-wake-and-keyboard-for-s2idle)
 * [Function keys](?tab=readme-ov-file#function-keys)
-* [CachyOS BORE Full-LTO kernel compiled on the CF-SV7]
 
 ## Arch Install
 
