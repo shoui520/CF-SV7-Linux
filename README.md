@@ -556,3 +556,19 @@ echo enabled | sudo tee /sys/devices/platform/i8042/serio0/power/wakeup
 ```
 balooctl6 disable
 ```
+#### Disable animations and effects
+
+KDE System Settings → Animations → Global animation speed: **Instant** - disables all animations. 
+
+KDE System Settings → Window Management → Desktop Effects. Disable unneeded effects here. I only have 3 enabled: Overview, Dialog Parent, Decrease saturation of non responding apps
+
+You can also disable transparency for the bottom panel. right click > edit panel > transparency > opaque
+### KRunner plugins
+
+KDE's search comes with a ton of plugins that all get loaded at every single keystroke. You can slim down the number of plugins you have enabled. 
+
+KDE System Settings → Search → Plasma Search. Disable stuff you don't need. I have only 4 enabled: Power, Applications, System Settings, Global Shortcuts
+
+### KDE services
+
+Search for "services" in the application launcher. Disable things you are certain you don't need.  
