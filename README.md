@@ -434,7 +434,8 @@ sudo chmod +x /usr/lib/systemd/system-sleep/lock-first.sh
 This solution isn't perfect. You might need to further adjust the `sleep 2.5` line to wait for longer, depending on your experiences.  
 
 ### S2idle issues - switch to suspend (deep)
-This is merely an option that is available, you don't need to do this; use it if you suspect s2idle is unstable on your system. I've encountered a kernel panic with s2idle before. I haven't been able to repro it but because of stability concerns like this and battery life disadvantages, I opted to use deep/suspend-to-ram/S3 instead.  
+This is merely an option that is available, you don't need to do this; use it if you suspect s2idle is unstable on your system and unsuitable for your needs. In my experience, s2idle sleep on this is just screen off with extra steps: the CPU stays on, the fan stays spinning and processes continue running. I've also encountered a kernel panic with s2idle before. I haven't been able to repro it but because of stability concerns like this and battery life disadvantages, I just don't see the point of s2idle. So, I opted to use deep/suspend-to-ram/S3 instead.  
+
 Append `mem_sleep_default=deep` to your `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`
 e.g.,:
 ```
@@ -444,6 +445,30 @@ Then regenerate GRUB config:
 ```
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+### Enable power switch to wake (and keyboard for s2idle)
+
+On Windows installs with the Panasonic drivers installed, you should be able to wake the laptop up from sleep with the internal keyboard, the power button, by opening the lid and with USB peripherals. On Linux, by default you can only wake up the laptop by opening the lid or using USB peripherals.  
+
+Works on both s2idle and deep: You can add support for waking up with the power button by doing this:
+```
+sudo pacman -S acpi_call-dkms
+sudo modprobe acpi_call
+echo "acpi_call" | sudo tee /etc/modules-load.d/acpi_call.conf
+sudo tee /usr/lib/systemd/system-sleep/wake-fix.sh << 'EOF'
+#!/bin/bash
+if [ "$1" = "pre" ]; then
+    echo '\_SB.PCI0.LPCB.EC0.EC43 1' > /proc/acpi/call
+fi
+EOF
+sudo chmod +x /usr/lib/systemd/system-sleep/wake-fix.sh
+```
+
+Works on only s2idle: For the internal keyboard, you can enable support by doing this:  
+```
+echo enabled | sudo tee /sys/devices/platform/i8042/serio0/power/wakeup
+```
+
 ### KDE Performance Optimization:
 #### Disable file indexer:
 ```
