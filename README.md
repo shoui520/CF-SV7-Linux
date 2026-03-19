@@ -716,4 +716,4 @@ Speedometer 3.1 results:
 ¹ - Brave Shields disabled.  
 ² - While Microsoft Edge gives you the best Speedometer 3.1 results on Windows, it is unclear why it is slower on Linux and tasks the CPU harder than other browsers on Linux.   
 
-The overall best experience is Helium Browser. It's just as fast as Chrome while using less memory than Chrome, supports uBlock Origin and GPU-accelerated video decoding should just work out of the box if you have `intel-media-driver` `libva-intel-driver` `vulkan-intel` installed.  
+The overall best experience is Helium Browser. It's just as fast as Chrome while using less memory than Chrome, supports uBlock Origin and GPU-accelerated video decoding should just work out of the box if you have `intel-media-driver` `libva-intel-driver` `vulkan-intel` installed. For 60 FPS video, YouTube serves these in the AV1 format, which the i5-8350U has no hardware decoding support for, so you need to use **enhanced-h264ify** with the "Block AV1" option.  
