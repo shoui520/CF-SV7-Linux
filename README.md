@@ -223,11 +223,18 @@ cd /tmp
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si
-``` 
+```
+### Disable installing `-debug` packages
+
+Edit `/etc/makepkg.conf`, add `!` to `debug` in OPTIONS
+```
+OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug lto)
+```
+
 ### Install KDE (X11)
 The Let's Note circular scrolling feature is very useful, but it **does not work on Wayland**. We will be using X11 instead.  
 ```
-sudo pacman -S plasma-x11-session xorg-server xorg-xinit xorg-xrandr plasma-desktop sddm sddm-kcm kscreen kde-gtk-config breeze-gtk plasma-pa plasma-nm plasma-systemmonitor bluedevil powerdevil konsole dolphin kate spectacle ark systemsettings xdg-desktop-portal xdg-desktop-portal-kde xdg-user-dirs power-profiles-daemon fastfetch partitionmanager ntfs-3g dosfstools exfatprogs btrfs-progs intel-gpu-tools intel-media-driver libva-intel-driver vulkan-intel usbutils
+sudo pacman -S plasma-x11-session xorg-server xorg-xinit xorg-xrandr plasma-desktop sddm sddm-kcm kscreen kde-gtk-config breeze-gtk plasma-pa plasma-nm plasma-systemmonitor bluedevil powerdevil konsole dolphin kate spectacle ark systemsettings xdg-desktop-portal xdg-desktop-portal-kde xdg-user-dirs power-profiles-daemon fastfetch partitionmanager ntfs-3g dosfstools exfatprogs btrfs-progs intel-gpu-tools intel-media-driver libva-intel-driver vulkan-intel usbutils kdeplasma-addons
 ```
 ### PipeWire for audio
 ```
@@ -241,7 +248,7 @@ sudo systemctl enable sddm
 ```
 sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 ```
-Then install 源ノゴシック Code JP, it's a way better terminal and code font than Noto Sans Mono CJK JP.  
+Then install 源ノ角ゴシック Code JP, it's a way better terminal and code font than Noto Sans Mono CJK JP.  
 ```
 yay -S otf-source-han-code-jp
 ```
@@ -554,10 +561,6 @@ Reboot.
 #### Stop last screen from showing
 When the laptop is waken up, it will show the last screen shown when the laptop was put to sleep. This means anyone will see your desktop before the KDE lock screen. You need to do some clever trickery to get around this:
 
-Install vlock:
-```
-sudo pacman -S vlock
-```
 Add this systemd script (save as a .sh file) to `/etc/systemd/system-sleep/` (mkdir it if it doesn't exist)
 ```
 #!/bin/bash
