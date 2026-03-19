@@ -1,0 +1,13 @@
+[Unit]
+Description=KMSCon VT on %I
+After=systemd-user-sessions.service
+After=plymouth-quit-wait.service
+Conflicts=getty@%i.service
+
+[Service]
+ExecStart=/usr/bin/kmscon "--vt=%I" --no-switchvt --font-name "Source Han Code JP Regular" --font-size 18 --login -- /usr/bin/login -p
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
