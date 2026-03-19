@@ -356,6 +356,7 @@ sudo systemctl enable --now keyd
 sudo tee /etc/keyd/default.conf << 'EOF'
 [ids]
 *
+-0001:0001
 
 [main]
 katakanahiragana = hiragana
