@@ -301,6 +301,18 @@ Make SDDM look KDE-native.
 4. Click "Breeze", then click Apply/適用
 5. Enter the root password.
 
+### Set KDE fonts
+
+1. Open KDE System Settings
+2. Click "Text & Fonts" (テキストとフォント)
+3. Set the fonts to:
+   * Noto Sans CJK JP
+   * 源ノ角ゴシック Code JP Regular
+   * Noto Sans CJK JP
+   * Noto Sans CJK JP
+   * Noto Sans CJK JP
+   * Noto Sans CJK JP
+4. Click Apply (適用).  
 ### Japanese IME installation - part 2
 
 In KDE, the IME requires a little setup to work as expected.
@@ -443,7 +455,11 @@ Save a new profile:
 ```
 autorandr --save <profile_name>
 ```
-I created a shell script to let you easily load autorandr profiles.  
+I created a shell script to let you easily load autorandr profiles. This requires `kdialog` as a dependency, get it now:
+```
+sudo pacman -S kdialog
+```
+
 Grab the script `fn-f8.sh` from the function-keys folder, put it in `~/.local/bin` or anywhere else you put your scripts.  
 Make the script executable:
 ```
