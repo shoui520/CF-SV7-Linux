@@ -757,6 +757,75 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 reboot
 ```
 
+If there is a new version out, compile the kernel yourself, here are the instructions:
+
+
+Build deps
+```
+sudo pacman -S --needed base-devel bc cpio gettext initramfs libelf pahole perl \
+  python rust rust-bindgen rust-src tar xz zstd clang llvm lld
+```  
+
+Clone repo  
+```
+mkdir -p ~/kernel-build && cd ~/kernel-build
+git clone https://github.com/CachyOS/linux-cachyos.git
+cd linux-cachyos/linux-cachyos
+```
+
+Edit the PKGBUILD
+```
+# BEFORE:
+: "${_use_llvm_lto:=thin}"
+# AFTER:
+: "${_use_llvm_lto:=full}"
+```
+```
+# BEFORE:
+: "${_tcp_bbr3:=no}"
+# AFTER:
+: "${_tcp_bbr3:=yes}"
+```
+add this block in the prepare() function, right after the USER_NS line (~line 466):
+```
+    scripts/config -d NUMA
+```
+
+Will use march=X86_NATIVE_CPU by default, which will be the right one for your CPU. 
+
+Create a temporary 32G swap file (full LTO uses a lot of memory)
+```
+sudo fallocate -l 32G /tempswap
+sudo chmod 600 /tempswap
+sudo mkswap /tempswap
+sudo swapon /tempswap
+```
+Start the build (ETA: 4 hours)
+```
+cd ~/kernel-build/linux-cachyos/linux-cachyos
+makepkg -s --cleanbuild 2>&1 | tee build.log
+```
+
+Install after build is complete:
+```
+sudo pacman -U linux-cachyos-*-x86_64.pkg.tar.zst linux-cachyos-headers-*-x86_64.pkg.tar.zst
+```
+Regenerate GRUB
+```
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+Clean up the swapfile
+```
+sudo swapoff /tempswap
+sudo rm /tempswap
+```
+
+Reboot and pick linux-cachyos from GRUB
+```
+reboot
+```
+
 GRUB Tips:
 To make it easier to pick kernels from GRUB, add these to `/etc/default/grub`:
 ```
