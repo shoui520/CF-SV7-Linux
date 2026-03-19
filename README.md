@@ -766,6 +766,17 @@ GRUB_SAVEDEFAULT=true
 GRUB_DISABLE_SUBMENU=true
 ```
 
+### zsh
+
+I recommend switching to zsh, since it makes it easier to use the terminal. Here's the braindead painless setup:
+
+```
+chmod +x migrate-to-zsh.sh
+./migrate-to-zsh.sh
+```
+
+Now edit your Konsole profile to use `/usr/bin/zsh`.  
+
 ### Fastest browsers
 
 All were tested with extensions disabled. All tests were done at least twice to make sure it's not a fluke. 
