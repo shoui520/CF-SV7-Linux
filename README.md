@@ -424,14 +424,47 @@ The switch also physically cuts USB power to the Bluetooth controller (typically
 
 ### Function keys
 
-All function keys work and produce scan codes, they can be mapped to anything you wish. These two: F8 (projector) and F10 (hibernate/suspend), don't do anything by default. The system receives the input, but doesn't know what to do with it.  
-If you wish to replicate the Panasonic intended Windows experience, you can set keyboard shortcuts in KDE:
+All function keys work and produce scan codes, they can be mapped to anything you wish.   
 
-1. Open KDE System Settings
-2. Go on "Keyboard" and then "Shortcuts"
-3. Under Applications, click on KDE System Settings. Set a shortcut for **Display Settings**. Press F8.
+These two Fn functions: Fn+F8 (restore display settings) and Fn+F10 (hibernate), don't do anything by default. The system receives the input, but doesn't know what to do with it. On Windows, Fn+F9 should just show the battery percentage, but on KDE it is mapped to switching the power plan.
+If you wish to replicate the Panasonic intended Windows experience, follow the steps below.  
 
-Hibernate requires additional setup. After you set up hibernate, you can set the keyboard shortcut for **Hibernate** under **Power Management** as F10.  
+For Fn+F8, you need to install `autorandr`, it does the same thing as the Panasonic PC Utility "保存した情報で表示" feature. You can save display settings and load them on demand. Panasonic created this for business environments (e.g., Imagine having a display settings preset for your projector setup. You plug in the Let's Note to a projector, and press Fn+F8 and immediately have your projector display setup back.)  
+
+```
+sudo pacman -S autorandr
+```
+If you would like to save your current setup as the default profile, do the following:
+```
+autorandr --save default
+autorandr -d default
+```
+Save a new profile:
+```
+autorandr --save <profile_name>
+```
+I created a shell script to let you easily load autorandr profiles.  
+Grab the script `fn-f8.sh` from the function-keys folder, put it in `~/.local/bin` or anywhere else you put your scripts.  
+Make the script executable:
+```
+chmod +x fn-f8.sh
+```
+
+Now, set the script to execute with the Fn+F8 keyboard shortcut:  
+KDE System Settings → Keyboard → Shortcuts → Add New → Command or script → select the fn-f8.sh script. Set Fn-F8 as the keyboard shortcut and click Apply.  
+
+
+For Fn+F9, you can also replicate the Panasonic intended functionality with a shell script. 
+Grab the script `fn-f9.sh` from the function-keys folder, put it in `~/.local/bin` or anywhere else you put your scripts.  
+Make the script executable:
+```
+chmod +x fn-f9.sh
+```
+
+Now, set the script to execute with the Fn+F9 keyboard shortcut:  
+KDE System Settings → Keyboard → Shortcuts → Add New → Command or script → select the fn-f9.sh script. Set Fn-F9 as the keyboard shortcut and click Apply.  
+
+For Fn+F10, you need to set up hibernate (see below). After that's done, you can set the keyboard shortcut using KDE System Settings. Keyboard → Shortcuts → Power Management → Hibernate  
 
 ### Hibernate setup  
 Since I opted for zram over swap initially, I didn't have an on-disk swapfile, but this is fine, we can still create one and use hibernate.  
@@ -627,7 +660,7 @@ Speedometer 3.1 results:
 * `microsoft-edge-stable-bin`, version 	146.0.3856.62-1: **10.3**²
 * `floorp-bin`, version 12.11.0-1: **8.81**
 
-¹ - Brave Shields disabled.
+¹ - Brave Shields disabled.  
 ² - While Microsoft Edge gives you the best Speedometer 3.1 results on Windows, it is unclear why it is slower on Linux and tasks the CPU harder than other browsers on Linux.   
 
 The overall best experience is Helium Browser. It's just as fast as Chrome while using less memory than Chrome, supports uBlock Origin and GPU-accelerated video decoding should just work out of the box if you have `intel-media-driver` `libva-intel-driver` `vulkan-intel` installed.  
