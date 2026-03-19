@@ -21,6 +21,7 @@ Skip to:
 * [Add support for power switch + keyboard to wake](?tab=readme-ov-file#enable-power-switch-to-wake-and-keyboard-for-s2idle)
 * [Function keys](?tab=readme-ov-file#function-keys)
 
+＊Install script is untested by me. But if you follow everything here sequentially, everything should just work.  
 ## Arch Install
 
 Boot into an Arch installation media (Archiso).  
