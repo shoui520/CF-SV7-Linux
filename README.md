@@ -607,3 +607,27 @@ GRUB_DEFAULT=saved
 GRUB_SAVEDEFAULT=true
 GRUB_DISABLE_SUBMENU=true
 ```
+
+### Fastest browsers
+
+All were tested with extensions disabled. All tests were done at least twice to make sure it's not a fluke. 
+
+
+Speedometer 3.1 results:
+
+* `google-chrome-dev`, version 	148.0.7730.2-1: **13.2**
+* `google-chrome`, version 146.0.7680.153-1: **13.2**
+* `helium-browser-bin`: version 0.10.5.1-1: **13.1**
+* `brave-bin`, version 1:1.88.132-1: **12.7**¹
+* `vivaldi`, version 	7.8.3925.81-1: **12.5**
+* `firefox-developer-edition`, version 149.0b8-1: **11.7** 
+* `zen-browser-bin`, version 1.19.3b-1: **11.5**
+* `firefox`, version 	148.0.2-1: **11.4**
+* `ungoogled-chromium-bin`, version 145.0.7632.116-1: **10.4**
+* `microsoft-edge-stable-bin`, version 	146.0.3856.62-1: **10.3**²
+* `floorp-bin`, version 12.11.0-1: **8.81**
+
+¹ - Brave Shields disabled.
+² - While Microsoft Edge gives you the best Speedometer 3.1 results on Windows, it is unclear why it is slower on Linux and tasks the CPU harder than other browsers on Linux.   
+
+The overall best experience is Helium Browser. It's just as fast as Chrome while using less memory than Chrome, supports uBlock Origin and GPU-accelerated video decoding should just work out of the box if you have `intel-media-driver` `libva-intel-driver` `vulkan-intel` installed.  
