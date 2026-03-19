@@ -366,6 +366,17 @@ EOF
 sudo keyd reload
 ```
 
+### Mozc UT dictionary
+
+Highly optional as this requires compiling it yourself (no prebuilt binaries) but it vastly improves the Japanese IME 予測変換 experience on Linux.  
+```
+yay -S mozc-ut fcitx5-mozc-ut
+```
+This will compile them from source. You might want to do `watch -n 60 sudo -v` to refresh the sudo credential every 60 seconds so sudo doesn't time out while you're AFK and fail installing.  
+
+After that, you need to re-configure Mozc in KDE:
+KDE System Settings → Input Method → Add → Mozc. Ensure it's in "input method on". Ensure the layout is set properly so you can use your 半角 key.  
+
 ### Japanese TTY (kmsconsole)
 ```
 yay -S kmscon
