@@ -337,6 +337,27 @@ We are not quite done yet, now we need to set the IME in **Input Method**.
 7. Ensure Mozc is in "Input Method On/入力メソッドオン"
 8. Click **Apply/適用** to finish.
 
+### Fix カタカナひらがな key not working on Mozc
+
+```
+sudo pacman -S keyd
+```
+```
+sudo systemctl enable --now keyd
+```
+```
+sudo tee /etc/keyd/default.conf << 'EOF'
+[ids]
+*
+
+[main]
+katakanahiragana = hiragana
+
+[shift]
+katakanahiragana = katakana
+EOF
+sudo keyd reload
+```
 
 ### Japanese TTY (kmsconsole)
 ```
@@ -537,29 +558,31 @@ Install vlock:
 ```
 sudo pacman -S vlock
 ```
-Add this systemd script (save as a .sh file) to `/usr/lib/systemd/system-sleep/` (mkdir it if it doesn't exist)
+Add this systemd script (save as a .sh file) to `/etc/systemd/system-sleep/` (mkdir it if it doesn't exist)
 ```
 #!/bin/bash
 BACKLIGHT=/sys/class/backlight/intel_backlight
 
 if [ "$1" = "pre" ]; then
     cat "$BACKLIGHT/brightness" > /tmp/pre_suspend_brightness
+    cat /sys/class/tty/tty0/active > /tmp/pre_suspend_vt
     loginctl lock-sessions
     chvt 3
 fi
 
 if [ "$1" = "post" ]; then
     systemd-run --no-block bash -c '
-        chvt 2
+        VT=$(cat /tmp/pre_suspend_vt | grep -o "[0-9]*")
+        chvt "$VT"
         echo 0 > /sys/class/backlight/intel_backlight/brightness
-        sleep 2.5
+        sleep 3
         cat /tmp/pre_suspend_brightness > /sys/class/backlight/intel_backlight/brightness
     '
 fi
 ```
 Then run chmod +x on the file. e.g.:
 ```
-sudo chmod +x /usr/lib/systemd/system-sleep/lock-first.sh
+sudo chmod +x /etc/systemd/system-sleep/lock-first.sh
 ```
 
 This solution isn't perfect. You might need to further adjust the `sleep 2.5` line to wait for longer, depending on your experiences.  
