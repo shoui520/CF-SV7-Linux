@@ -722,6 +722,8 @@ EOF
 ```
 Gives you back 220MB of RAM on idle.   
 
+### Use simple themes and customizations.
+Using default Breeze things is the best for performance. Avoid using themes and decorations that have complex effects such as blur and transparency to minimize memory and CPU usage. In general, the default Breeze stuff isn't hacked together with SVG and QML, it's native C++ so it's faster.  
 ### Misc tweaks 
 
 malloc tuning: Qt apps respond well to MALLOC_ARENA_MAX=2 in your environment. glibc's default creates one arena per core which wastes virtual memory. On an 8-thread CPU that's 8 arenas × 64MB each of reserved address space that looks like memory usage in top even if it's not all resident. 
