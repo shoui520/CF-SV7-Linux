@@ -656,10 +656,79 @@ KDE's search comes with a ton of plugins that all get loaded at every single key
 
 KDE System Settings → Search → Plasma Search. Disable stuff you don't need. I have only 4 enabled: Power, Applications, System Settings, Global Shortcuts
 
+### KDE applets and widgets
+
+The more you have (on the bottom panel, desktop etc.) the more RAM it's using. 
+
+You should:
+1. Enter edit mode and remove widgets/applets you don't need.
+2. Open the system tray settings and **disable** everything you don't need.
+
+You can list currently active widgets with:
+```
+qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
+    var desktops = desktops();
+    for (var i = 0; i < desktops.length; i++) {
+        var widgets = desktops[i].widgets();
+        print("Desktop " + i + ":");
+        for (var j = 0; j < widgets.length; j++) {
+            print("  " + widgets[j].type + " - " + widgets[j].id);
+        }
+    }
+    var panels = panels();
+    for (var i = 0; i < panels.length; i++) {
+        var widgets = panels[i].widgets();
+        print("Panel " + i + " (" + panels[i].location + "):");
+        for (var j = 0; j < widgets.length; j++) {
+            print("  " + widgets[j].type + " - " + widgets[j].id);
+        }
+    }
+'
+```
+
 ### KDE services
 
 Search for "services" in the application launcher. Disable things you are certain you don't need.  
+You can list enabled services with:
+```
+busctl --user call org.kde.kded6 /kded org.kde.kded6 loadedModules
+```
+You can search the name of the module in the Background Services GUI to find the friendly name. I only have the following loaded:
+```
+as 15 "desktopnotifier" "gtkconfig" "ktimezoned" "networkmanagement" "kameleon" "audioshortcutsservice" "kded_touchpad" "mprisservice" "plasma_accentcolor_service" "plasma-session-shortcuts" "keyboard" "bluedevil" "kscreen" "devicenotifications" "statusnotifierwatcher"
+```
 
+### Fcitx5 Plasma Theme Generator
+
+This consumes 220MB of RAM doing nothing (for me) and can't be disabled. The only way to disable it is to rename the binary:
+```
+sudo mv /usr/bin/fcitx5-plasma-theme-generator /usr/bin/fcitx5-plasma-theme-generator.bak
+```
+If you want this to survive fcitx updates, add a pacman hook:
+```
+sudo mkdir -p /etc/pacman.d/hooks
+sudo tee /etc/pacman.d/hooks/fcitx5-theme-generator.hook << 'EOF'
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = fcitx5-configtool
+
+[Action]
+Description = Disabling fcitx5-plasma-theme-generator
+When = PostTransaction
+Exec = /usr/bin/mv /usr/bin/fcitx5-plasma-theme-generator /usr/bin/fcitx5-plasma-theme-generator.bak
+EOF
+```
+Gives you back 220MB of RAM on idle.   
+
+### Misc tweaks 
+
+malloc tuning: Qt apps respond well to MALLOC_ARENA_MAX=2 in your environment. glibc's default creates one arena per core which wastes virtual memory. On an 8-thread CPU that's 8 arenas × 64MB each of reserved address space that looks like memory usage in top even if it's not all resident. 
+```
+mkdir -p ~/.config/environment.d
+echo "MALLOC_ARENA_MAX=2" > ~/.config/environment.d/malloc.conf
+```
 
 ## CachyOS 6.19.8 Kernel for Panasonic Let's Note CF-SV7
 Compiled this kernel to squeeze as much performance out of the CF-SV7 as possible. It has been really stable for me so far, which was a pleasant surprise. 
