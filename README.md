@@ -815,7 +815,7 @@ makepkg -s --cleanbuild 2>&1 | tee build.log
 
 Install after build is complete:
 ```
-sudo pacman -U linux-cachyos-*-x86_64.pkg.tar.zst linux-cachyos-headers-*-x86_64.pkg.tar.zst
+sudo pacman -U linux-cachyos-*-x86_64.pkg.tar.zst
 ```
 Regenerate GRUB
 ```
