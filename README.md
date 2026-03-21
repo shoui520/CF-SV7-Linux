@@ -379,6 +379,12 @@ This will compile them from source. You might want to do `watch -n 60 sudo -v` t
 After that, you need to re-configure Mozc in KDE:
 KDE System Settings → Input Method → Add → Mozc. Ensure it's in "input method on". Ensure the layout is set properly so you can use your 半角 key.  
 
+### KDE Ark plugins
+
+The KDE unarchiver/archiver needs extra plugins for full functionality:
+```
+yay -S p7zip unzip zip lrzip lzop lz4 zstd xz bzip2 gzip libarchive unrar arj unar
+```
 ### Japanese TTY (kmsconsole)
 ```
 yay -S kmscon
@@ -870,3 +876,10 @@ Speedometer 3.1 results:
 ² - While Microsoft Edge gives you the best Speedometer 3.1 results on Windows, it is unclear why it is slower on Linux and tasks the CPU harder than other browsers on Linux.   
 
 The overall best experience is Helium Browser. It's just as fast as Chrome while using less memory than Chrome, supports uBlock Origin and GPU-accelerated video decoding should just work out of the box if you have `intel-media-driver` `libva-intel-driver` `vulkan-intel` installed. For 60 FPS video, YouTube serves these in the AV1 format, which the i5-8350U has no hardware decoding support for, so you need to use **enhanced-h264ify** with the "Block AV1" option.  
+
+### DVD playback
+The best way to playback DVDs on Linux is to just use VLC. You can install VLC plus everything it needs with the following command:
+
+```
+sudo pacman -S vlc ffmpeg vlc-plugins-all
+```
