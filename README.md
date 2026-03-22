@@ -739,10 +739,10 @@ mkdir -p ~/.config/environment.d
 echo "MALLOC_ARENA_MAX=2" > ~/.config/environment.d/malloc.conf
 ```
 
-## CachyOS 6.19.8 Kernel for Panasonic Let's Note CF-SV7
-Compiled this kernel to squeeze as much performance out of the CF-SV7 as possible. It has been really stable for me so far, which was a pleasant surprise. 
+## CachyOS BORE Full-LTO Kernel for Panasonic Let's Note CF-SV7
+Compile this kernel to squeeze as much performance out of the CF-SV7 as possible. It has been really stable for me so far, which was a pleasant surprise. 
 
-* CachyOS 6.19.8 with BORE scheduler
+* CachyOS with BORE scheduler
 * Clang/LLVM Full LTO (whole-program link-time optimisation)
 * -O3 aggressive optimisation
 * Native Skylake CPU target (AVX2, BMI2, AES-NI, FMA)
@@ -752,20 +752,8 @@ Compiled this kernel to squeeze as much performance out of the CF-SV7 as possibl
 * NUMA disabled (single-socket laptop)
 
 Intended environment:
-* Kaby Lake-R CPU (such as my i5-8350U)
 * Arch Linux
 * GRUB bootloader
-
-File size too big for my GitHub account, so just download it in the browser: [Download](https://mega.nz/folder/tJk1WZRC#1Hv5uvcgvaSEdI35XXLx2Q)  
-
-```
-sudo pacman -U linux-cachyos-6.19.8-1-x86_64.pkg.tar.zst linux-cachyos-headers-6.19.8-1-x86_64.pkg.tar.zst
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-reboot
-```
-
-If there is a new version out, compile the kernel yourself, here are the instructions:
-
 
 Build deps
 ```
