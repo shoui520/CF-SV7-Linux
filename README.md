@@ -146,6 +146,12 @@ We will set up 日本語表示 support in the TTY later.
 ```
 echo "SV7" > /etc/hostname
 ```
+Edit `/etc/hosts` according to your hostname
+```
+127.0.0.1  localhost
+::1        localhost
+127.0.1.1  SV7.localdomain  SV7
+```
 Root password
 ```
 passwd
