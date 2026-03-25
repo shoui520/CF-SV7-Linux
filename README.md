@@ -13,13 +13,15 @@ My system information for brevity, but all CF-SV7's should be the same and this 
 
 As for the CF-SV8, it's the Whiskey Lake refresh of the CF-SV7. It looks otherwise identical hardware-wise other than a more recent CPU (i5-8350U vs. i5-8365U) and chipset. I have not tested it, but I expect this guide to work just as well for the CF-SV8 too (not a guarantee).  
 
-Skip to:
-* [Circular scrolling](?tab=readme-ov-file#circular-scrolling)
-* [Wireless switch](?tab=readme-ov-file#wireless-switch)
-* [Disable s2idle/modern standby](?tab=readme-ov-file#s2idle-issues---switch-to-suspend-deep)
-* [Last screen showing on wake issue](?tab=readme-ov-file#stop-last-screen-from-showing)
-* [Add support for power switch + keyboard to wake](?tab=readme-ov-file#enable-power-switch-to-wake-and-keyboard-for-s2idle)
-* [Function keys](?tab=readme-ov-file#function-keys)
+With this setup, **everything works.**  
+
+Skip to things specific to this laptop:
+* [Circular scrolling](#circular-scrolling)
+* [Wireless switch](#wireless-switch)
+* [Disable s2idle/modern standby](#s2idle-issues---switch-to-suspend-deep)
+* [Last screen showing on wake issue](#stop-last-screen-from-showing)
+* [Add support for power switch + keyboard to wake](#enable-power-switch-to-wake-and-keyboard-for-s2idle)
+* [Function keys](#function-keys)
 
 ＊Install script is untested by me. But if you follow everything here sequentially, everything should just work.  
 ## Arch Install
