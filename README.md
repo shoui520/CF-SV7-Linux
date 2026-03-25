@@ -387,7 +387,7 @@ KDE System Settings → Input Method → Add → Mozc. Ensure it's in "input met
 
 The KDE unarchiver/archiver needs extra plugins for full functionality:
 ```
-yay -S p7zip unzip zip lrzip lzop lz4 zstd xz bzip2 gzip libarchive unrar arj unar
+yay -S p7zip unzip zip lrzip lzop lz4 zstd xz bzip2 gzip libarchive unrar arj
 ```
 ### Japanese TTY (kmsconsole)
 ```
