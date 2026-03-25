@@ -13,17 +13,13 @@ My system information for brevity, but all CF-SV7's should be the same and this 
 
 As for the CF-SV8, it's the Whiskey Lake refresh of the CF-SV7. It looks otherwise identical hardware-wise other than a more recent CPU (i5-8350U vs. i5-8365U) and chipset. I have not tested it, but I expect this guide to work just as well for the CF-SV8 too (not a guarantee).  
 
-With this setup, **everything works.**  
-
-Skip to things specific to this laptop:
+With this setup, **everything works.**  Skip to things specific to this laptop:
 * [Circular scrolling](#circular-scrolling)
 * [Wireless switch](#wireless-switch)
 * [Disable s2idle/modern standby](#s2idle-issues---switch-to-suspend-deep)
 * [Last screen showing on wake issue](#stop-last-screen-from-showing)
 * [Add support for power switch + keyboard to wake](#enable-power-switch-to-wake-and-keyboard-for-s2idle)
 * [Function keys](#function-keys)
-
-＊Install script is untested by me. But if you follow everything here sequentially, everything should just work.  
 ## Arch Install
 
 Boot into an Arch installation media (Archiso).  
